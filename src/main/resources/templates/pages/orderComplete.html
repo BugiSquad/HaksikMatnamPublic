@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout_common}">
+<body>
+<div class="content-wrapper" layout:fragment="content">
+    <div class="container">
+        <h1>완료된 주문</h1>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>주문번호</th>
+                <th>총 금액</th>
+                <th>완료된 시간</th>
+                <th>메뉴</th>
+                <th>상태</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Loop through orderDetail and display order details -->
+            <tr th:each="orderDetail : ${orderDetail}">
+                <td th:text="${orderDetail.orderId}"></td>
+                <td th:text="${orderDetail.totalPrice}"></td>
+                <td th:text="${#temporals.format(orderDetail.modifiedAt, 'HH:mm')}"></td>
+                <td>
+                    <!-- Loop through menuAdminDto and display menu details -->
+                    <ul>
+                        <li th:each="menu : ${orderDetail.menuAdminDto}">
+                            <span th:text="${menu.menu.name}"></span>
+                            (<span th:text="${menu.count}"></span>개)
+                        </li>
+                    </ul>
+                </td>
+                <td th:text="${orderDetail.ordersType}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

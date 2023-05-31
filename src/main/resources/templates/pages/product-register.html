@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout_common}"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>상품등록</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-DmYZf5PXRkDhcJTpSZI5408ma0WYoEXjK7Ze1x6pSkk7X5U5O5a7kP3MvpP4M2wM"
+          crossorigin="anonymous">
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<!-- Main content -->
+<div class="content-wrapper" layout:fragment="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">상품등록</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <form role="form" method="POST" action="/menu" enctype="multipart/form-data">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="name">이름:</label>
+                                <input type="text" class="form-control" id="name" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="detail">상세정보:</label>
+                                <input type="text" class="form-control" id="detail" name="detail" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="file">이미지:</label>
+                                <input type="file" class="form-control-file" id="file" name="file" accept="image/*">
+                            </div>
+                            <div class="form-group">
+                                <label for="price">가격:</label>
+                                <input type="number" class="form-control" id="price" name="price" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="category">카테고리:</label>
+                                <select class="form-control" id="category" name="category" required>
+                                    <option value="" disabled selected>카테고리를 선택해주세요.</option>
+                                    <option th:each="category : ${T(BugiSquad.HaksikMatnam.menu.etc.MenuCategory).values()}"
+                                            th:value="${category}" th:text="${category}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-primary">등록</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.card -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+</div>
+<!-- /.content-wrapper -->
+</body>
+</html>

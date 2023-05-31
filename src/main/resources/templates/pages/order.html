@@ -1,0 +1,198 @@
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org"-->
+<!--      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"-->
+<!--      layout:decorate="~{layout/layout_common}">-->
+<!--<body>-->
+<!--<div class="content-wrapper" layout:fragment="content">-->
+<!--    <div class="container">-->
+<!--        <h1>새로운 주문</h1>-->
+<!--        <table class="table">-->
+<!--            <thead>-->
+<!--            <tr>-->
+<!--                <th>주문번호</th>-->
+<!--                <th>총 금액</th>-->
+<!--                <th>주문한 시간</th>-->
+<!--                <th>예약한 시간</th>-->
+<!--                <th>메뉴</th>-->
+<!--                <th>Actions</th>-->
+<!--                <th>상태</th>-->
+<!--            </tr>-->
+<!--            </thead>-->
+<!--            <tbody>-->
+<!--            &lt;!&ndash; Loop through orderDetail and display order details &ndash;&gt;-->
+<!--            <tr th:each="orderDetail : ${orderDetail}">-->
+<!--                <td th:text="${orderDetail.orderId}"></td>-->
+<!--                <td th:text="${orderDetail.totalPrice}"></td>-->
+<!--                <td th:text="${#temporals.format(orderDetail.createdAt, 'HH:mm')}"></td>-->
+<!--                <td th:text="${#temporals.format(orderDetail.createdAt, 'HH:mm')}"></td>-->
+<!--                <td>-->
+<!--                    &lt;!&ndash; Loop through menuAdminDto and display menu details &ndash;&gt;-->
+<!--                    <ul>-->
+<!--                        <li th:each="menu : ${orderDetail.menuAdminDto}">-->
+<!--                            <span th:text="${menu.menu.name}"></span>-->
+<!--                            (<span th:text="${menu.count}"></span>개)-->
+<!--                        </li>-->
+<!--                    </ul>-->
+<!--                </td>-->
+<!--                <td>-->
+
+<!--                    <div th:switch="${orderDetail.ordersType}">-->
+<!--                        <a th:case="${T(BugiSquad.HaksikMatnam.order.etc.OrderType).NOW}">-->
+<!--                            <a th:href="@{'/order/change-order-type/COOKING/' + ${orderDetail.orderId}}"-->
+<!--                               class="btn btn-success">조리시작</a>-->
+<!--                            <a th:href="@{'/order/deny/' + ${orderDetail.orderId}}"-->
+<!--                               class="btn btn-danger">주문거절</a>-->
+<!--                        </a>-->
+<!--                        <a th:case="${T(BugiSquad.HaksikMatnam.order.etc.OrderType).COOKING}"-->
+<!--                           th:href="@{'/order/change-order-type/COMPLETE/' + ${orderDetail.orderId}}"-->
+<!--                           class="btn btn-dark">조리완료</a>-->
+<!--                    </div>-->
+<!--                </td>-->
+<!--                <td th:text="${orderDetail.ordersType}"></td>-->
+<!--            </tr>-->
+<!--            </tbody>-->
+<!--        </table>-->
+<!--    </div>-->
+<!--</div>-->
+<!--</body>-->
+<!--</html>-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout_common}">
+
+
+<body>
+<div class="content-wrapper" layout:fragment="content">
+    <div class="container">
+        <h1>새로운 주문</h1>
+        <table class="table" id="orderTable">
+            <thead>
+            <tr>
+                <th>주문번호</th>
+                <th>총 금액</th>
+                <th>주문한 시간</th>
+                <th>예약한 시간</th>
+                <th>메뉴</th>
+                <th>Actions</th>
+                <th>상태</th>
+            </tr>
+            </thead>
+            <tbody id="orderTableBody">
+            <!-- Loop through orderDetail and display order details -->
+            <tr th:each="orderDetail : ${orderDetail}">
+                <td th:text="${orderDetail.orderId}"></td>
+                <td th:text="${orderDetail.totalPrice}"></td>
+                <td th:text="${#temporals.format(orderDetail.createdAt, 'HH:mm')}"></td>
+                <td th:text="${#temporals.format(orderDetail.createdAt, 'HH:mm')}"></td>
+                <td>
+                    <!-- Loop through menuAdminDto and display menu details -->
+                    <ul>
+                        <li th:each="menu : ${orderDetail.menuAdminDto}">
+                            <span th:text="${menu.menu.name}"></span>
+                            (<span th:text="${menu.count}"></span>개)
+                        </li>
+                    </ul>
+                </td>
+                <td>
+                    <div th:switch="${orderDetail.ordersType}">
+                        <a th:case="${T(BugiSquad.HaksikMatnam.order.etc.OrderType).NOW}">
+                            <a th:href="@{'/order/change-order-type/COOKING/' + ${orderDetail.orderId}}"
+                               class="btn btn-success">조리시작</a>
+                            <a th:href="@{'/order/deny/' + ${orderDetail.orderId}}"
+                               class="btn btn-danger">주문거절</a>
+                        </a>
+                        <a th:case="${T(BugiSquad.HaksikMatnam.order.etc.OrderType).COOKING}"
+                           th:href="@{'/order/change-order-type/COMPLETE/' + ${orderDetail.orderId}}"
+                           class="btn btn-dark">조리완료</a>
+                    </div>
+                </td>
+                <td th:text="${orderDetail.ordersType}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!--<script>-->
+<!--    setInterval(refreshPage, 1000);-->
+
+<!--    function refreshPage() {-->
+<!--        location.reload(); // 페이지를 새로고침-->
+<!--    }-->
+<!--</script>-->
+
+</body>
+</html>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<script>
+    function refreshModel() {
+        // 모델을 가져오는 비동기 요청
+        $.ajax({
+            url: '/order/refresh', // 모델을 가져오는 엔드포인트 URL을 여기에 입력하세요
+            method: 'GET',
+            success: function (data) {
+                // 데이터를 받아서 <tbody> 내부의 내용을 갱신
+                updateTableBody(data);
+            },
+            error: function (xhr, status, error) {
+                console.error('모델을 가져오는 동안 오류가 발생했습니다:', error);
+            }
+        });
+    }
+
+    function updateTableBody(data) {
+        var tableBody = $('#orderTableBody'); // <tbody> 요소 선택
+        tableBody.empty(); // 기존 내용 삭제
+
+        // 데이터를 반복하여 <tr> 요소를 생성하고 테이블에 추가
+        data.data.forEach(function (orderDetail) {
+            var tr = $('<tr>');
+            tr.append($('<td>').text(orderDetail.orderId));
+            tr.append($('<td>').text(orderDetail.totalPrice));
+            tr.append($('<td>').text(formatTime(orderDetail.createdAt)));
+            tr.append($('<td>').text(formatTime(orderDetail.modifiedAt)));
+
+            var menuList = $('<ul>');
+            orderDetail.menuAdminDto.forEach(function (menu) {
+                var li = $('<li>');
+                li.append($('<span>').text(menu.menu.name));
+                li.append($('<span>').text('(' + menu.count + '개)'));
+                menuList.append(li);
+            });
+            tr.append($('<td>').append(menuList));
+
+            var actionsDiv = $('<div>');
+            switch (orderDetail.ordersType) {
+                case 'NOW':
+                    actionsDiv.append($('<a>').attr('href', '/order/change-order-type/COOKING/' + orderDetail.orderId)
+                        .addClass('btn btn-success').text('조리시작'));
+                    actionsDiv.append($('<a>').attr('href', '/order/deny/' + orderDetail.orderId)
+                        .addClass('btn btn-danger').text('주문거절'));
+                    break;
+                case 'COOKING':
+                    actionsDiv.append($('<a>').attr('href', '/order/change-order-type/COMPLETE/' + orderDetail.orderId)
+                        .addClass('btn btn-dark').text('조리완료'));
+                    break;
+                default:
+                    actionsDiv.append($('<a>').attr('href', '/order/deny/' + orderDetail.orderId)
+                        .addClass('btn btn-danger').text('주문거절'));
+                    break;
+            }
+            tr.append($('<td>').append(actionsDiv));
+
+            tr.append($('<td>').text(orderDetail.ordersType));
+
+            tableBody.append(tr);
+        });
+    }
+
+    function formatTime(dateTime) {
+        // 날짜 형식을 조정하여 반환 (예: HH:mm)
+        return moment(dateTime).format('HH:mm');
+    }
+
+    $(document).ready(function () {
+        refreshModel();
+        setInterval(refreshModel, 500);
+    });
+</script>

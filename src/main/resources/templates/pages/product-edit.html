@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout_common}">
+<head>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-pzjw8r+uaJKw8d0WjXTDIoJ6U5+PBbF5FfW+ahwaQC6jA6q6vq8qD94cKVuO7Jj4"
+          crossorigin="anonymous">
+</head>
+<body>
+
+<div class="content-wrapper" layout:fragment="content">
+    <div class="container">
+        <h1>Order Complete</h1>
+
+        <!-- Update Menu Form -->
+        <form th:action="@{/menu/update}" th:object="${menuDto}" method="post" enctype="multipart/form-data">
+            <input type="hidden" th:field="*{menuId}" />
+
+            <!-- Name -->
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name" th:field="*{name}" required />
+            </div>
+
+            <!-- Detail -->
+            <div class="form-group">
+                <label for="detail">Detail</label>
+                <input type="text" class="form-control" id="detail" th:field="*{detail}" required />
+            </div>
+
+            <!-- Image URL -->
+            <div class="form-group">
+                <label for="imageUrl">Before Image</label>
+                <div>
+                    <img th:src="${menuDto.imageUrl}" id="imageUrl" class="img-thumbnail" alt="Menu Image" />
+                </div>
+            </div>
+
+
+            <!-- New Image -->
+            <div class="form-group">
+                <label for="newImage">New Image</label>
+                <input type="file" class="form-control-file" id="newImage" name="newImage" accept="image/*" />
+            </div>
+
+
+            <!-- Price -->
+            <div class="form-group">
+                <label for="price">Price</label>
+                <input type="number" class="form-control" id="price" th:field="*{price}" required />
+            </div>
+
+
+            <!-- Category -->
+            <div class="form-group">
+                <label for="category">Category</label>
+                <select class="form-control" id="category" th:field="*{category}" required>
+                    <option th:each="category : ${T(BugiSquad.HaksikMatnam.menu.etc.MenuCategory).values()}"
+                            th:value="${category}" th:text="${category}"></option>
+                </select>
+            </div>
+
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary">Update Menu</button>
+        </form>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE
+        .T2csqTq3qD+9Xv2IH2RPL" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@1.5.0/dist/umd/popper.min.js"
+        integrity="sha384-LW8Hv0yy2OuzB1/0V2LW8AeeGHe7pM5Dyj5N5r5HEOzG1W97X8aCV7V2Q2D52b7V"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-pzjw8r+uaJKw8d0WjXTDIoJ6U5+PBbF5FfW+ahwaQC6jA6q6vq8qD94cKVuO7Jj4"
+        crossorigin="anonymous"></script>
+</body>
+</html>
