@@ -8,7 +8,7 @@
 <img src="https://github.com/BugiSquad/HaksikMatnam_Frontend/blob/master/src/images/Poster.jpg?raw=true" width="50%" height="50%"/>
 
 ### 구성도   
-<img src="./ProjectFlow.png" width="50%" height="50%"/>
+<img src="https://github.com/BugiSquad/HaksikMatnam_Backend/blob/main/images/ProjectFlow.png?raw=true" width="50%" height="50%"/>
 
 ## 서비스 개발 배경 및 목적
 - 코로나 이후 학우들간 교류가 감소하여 혼자 밥을 먹는 학우들이 증가하였습니다. 저희 팀은 이러한 문제점을 개선하고 기존 불편했던 학식당 어플을 보완하여 학우들간 가볍게 밥 한끼를 먹을 수 있도록 하는 프로젝트 입니다.
